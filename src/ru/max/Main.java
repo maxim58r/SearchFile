@@ -5,12 +5,16 @@ import java.io.File;
 public class Main {
     public static void main(String[] args) {
 
-        File pathFile = new File("/");
-        String nameSearch = "bounds";
+        File pathFile = new File("/proc/self");
+        String nameSearch = "7f5ce90a3000-7f5ce90ae000";
 
         for (int i = 0; i < pathFile.listFiles().length; i++) {
             if (pathFile.isDirectory()) {
-                searchFile(pathFile.listFiles()[i], nameSearch);
+                int finalI = i;
+                Thread thread = new Thread(() -> {
+                    searchFile(pathFile.listFiles()[finalI], nameSearch);
+                });
+                thread.start();
             }
         }
     }
