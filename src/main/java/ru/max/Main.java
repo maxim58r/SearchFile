@@ -27,20 +27,17 @@ public class Main {
             System.out.println("You system Mac");
             path = "/";
         }
-
         File pathF = new File(path);
 
         try {
             for (int i = 0; i < pathF.listFiles().length; i++) {
                 if (pathF.isDirectory()) {
                     int finalI = i;
-//                    String finalSearchFile = searchFiles;
                     Thread thread = new Thread(() -> searchFile(pathF.listFiles()[finalI], searchFiles));
                     thread.start();
                 }
             }
-        }catch (NullPointerException ignored){
-
+        } catch (NullPointerException ignored) {
         }
     }
 
@@ -51,8 +48,14 @@ public class Main {
                 for (File dir : listDir) {
                     searchFile(dir, name);
                     if (dir.isFile()) {
-                        if (dir.getName().toLowerCase().startsWith(name.toLowerCase())) {
-                            System.out.println(dir);
+                        if (name.startsWith(".")) {
+                            if (dir.getName().toLowerCase().endsWith(name.toLowerCase())) {
+                                System.out.println(dir);
+                            }
+                        } else {
+                            if (dir.getName().toLowerCase().startsWith(name.toLowerCase())) {
+                                System.out.println(dir);
+                            }
                         }
                     }
                 }
