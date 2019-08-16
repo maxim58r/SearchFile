@@ -11,7 +11,7 @@ public class Main {
         System.out.println(OS);
 
         System.out.print("Enter disk's letter for searching: ");
-        String enterDisk = input.nextLine();
+        String enterDiskForSearch = input.nextLine();
 
 
         System.out.print("Enter name file for searching: ");
@@ -19,7 +19,7 @@ public class Main {
 
         if (OS.toLowerCase().startsWith("windows")) {
             System.out.println("You system Windows");
-            path = enterDisk + ":\\";
+            path = enterDiskForSearch + ":\\";
         } else if (OS.toLowerCase().startsWith("linux")) {
             System.out.println("You system Unix");
             path = "/";
@@ -27,13 +27,13 @@ public class Main {
             System.out.println("You system Mac");
             path = "/";
         }
-        File pathF = new File(path);
+        File diskForSearch = new File(path);
 
         try {
-            for (int i = 0; i < pathF.listFiles().length; i++) {
-                if (pathF.isDirectory()) {
+            for (int i = 0; i < diskForSearch.listFiles().length; i++) {
+                if (diskForSearch.isDirectory()) {
                     int finalI = i;
-                    Thread thread = new Thread(() -> searchFile(pathF.listFiles()[finalI], searchFiles));
+                    Thread thread = new Thread(() -> searchFile(diskForSearch.listFiles()[finalI], searchFiles));
                     thread.start();
                 }
             }
@@ -41,20 +41,20 @@ public class Main {
         }
     }
 
-    private static void searchFile(File dirFile, String name) {
-        File[] listDir = dirFile.listFiles();
-        if (dirFile.isDirectory()) {
+    private static void searchFile(File fileSearchDirectory, String searchFileName) {
+        File[] listDirectories = fileSearchDirectory.listFiles();
+        if (fileSearchDirectory.isDirectory()) {
             try {
-                for (File dir : listDir) {
-                    searchFile(dir, name);
-                    if (dir.isFile()) {
-                        if (name.startsWith(".")) {
-                            if (dir.getName().toLowerCase().endsWith(name.toLowerCase())) {
-                                System.out.println(dir);
+                for (File directory : listDirectories) {
+                    searchFile(directory, searchFileName);
+                    if (directory.isFile()) {
+                        if (searchFileName.startsWith(".")) {
+                            if (directory.getName().toLowerCase().endsWith(searchFileName.toLowerCase())) {
+                                System.out.println(directory);
                             }
                         } else {
-                            if (dir.getName().toLowerCase().startsWith(name.toLowerCase())) {
-                                System.out.println(dir);
+                            if (directory.getName().toLowerCase().startsWith(searchFileName.toLowerCase())) {
+                                System.out.println(directory);
                             }
                         }
                     }
